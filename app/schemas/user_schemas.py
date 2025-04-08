@@ -67,6 +67,10 @@ class UserBase(BaseModel):
     def normalize_username(cls, v):
         return v.lower() if v else None
 
+    @validator('email', pre=True)
+    def normalize_email(cls, v):
+        return v.strip().lower() if v else None
+
     class Config:
         json_schema_extra = {
             "description": "Base model for user information.",
