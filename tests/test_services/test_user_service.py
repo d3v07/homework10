@@ -167,3 +167,12 @@ async def test_create_user_with_invalid_data_returns_error_with_caps_invalid_use
     }
     user = await UserService.create(db_session, user_data)
     assert user is None  # Assuming service returns None on failure
+
+async def test_create_user_with_invalid_data_returns_error_with_caps_invalid_email(db_session):
+    user_data = {
+        "username": "valid_username ",  # Too short
+        "email": "TEST-TEST.com",  # Incorrect email missin @
+        "password": "ValidPassword123!",  # Correct passowrd
+    }
+    user = await UserService.create(db_session, user_data)
+    assert user is None  # Assuming service returns None on failure
