@@ -55,8 +55,10 @@ class UserBase(BaseModel):
     @validator('profile_picture_url', pre=True, always=True)
     def validate_profile_picture_url(cls, v):
         if v is None:
-            return v  # If the URL is optional, allow None values
+            return v
         parsed_url = urlparse(v)
+        if parsed_url.scheme != 'https':
+            raise ValueError("Profile picture URL must use HTTPS.")
         if not re.search(r"\.(jpg|jpeg|png)$", parsed_url.path):
             raise ValueError("Profile picture URL must point to a valid image file (JPEG, PNG).")
         return v
@@ -94,7 +96,6 @@ class UserCreate(UserBase):
         if not re.search(r"[!@#$%^&*(),.?\":{}|<>]", v):
             raise ValueError("Password must contain at least one special character.")
         return v
-
     class Config:
         json_schema_extra = {
             "description": "Model for creating a new user account.",
@@ -102,7 +103,7 @@ class UserCreate(UserBase):
                 "username": "john_doe_123",
                 "email": "john.doe@example.com",
                 "password": "SecurePassword123!",
-                "full_name": "Jane Smith",
+                "full_name": "John Doe",
                 "bio": "I am a data scientist passionate about machine learning and big data analytics.",
                 "profile_picture_url": "https://example.com/profile_pictures/jane_smith.jpg"
             }
