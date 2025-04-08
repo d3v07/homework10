@@ -42,9 +42,9 @@ class UserBase(BaseModel):
     def validate_username(cls, v):
          if len(v) < 3 or len(v) > 50:
             raise ValueError("Username must be between 3 and 50 characters long.")
-        if not re.match(r"^[a-zA-Z0-9_-]+$", v):
+         if not re.match(r"^[a-zA-Z0-9_-]+$", v):
             raise ValueError("Username can only contain letters, numbers, underscores, and hyphens.")
-        return v
+         return v
 
     @validator('full_name')
     def validate_full_name(cls, v):
